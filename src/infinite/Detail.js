@@ -9,7 +9,7 @@ function Detail() {
       .then((res) => res.json())
       .then((res) => {
         setDetail(res);
-        console.log(res);
+        // console.log(res);
       });
   }, []);
 
