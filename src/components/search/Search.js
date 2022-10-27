@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import "../../styles/Search.css";
 
-function Search({ items, setItems, categoryList, setTarget }) {
+function Search({ items, setItems, categoryList, obsRef }) {
   const [filteredResults, setFilteredResults] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const inputFocus = useRef(null);
@@ -72,10 +72,8 @@ function Search({ items, setItems, categoryList, setTarget }) {
                 </div>
               );
             })}
-        <div ref={setTarget}>This is Target.</div>
+        <div ref={obsRef}>This is Target.</div>
       </div>
-
-      <div></div>
     </>
   );
 }
