@@ -1,10 +1,11 @@
-import InfiniteScroll from "./infinite/InfiniteScroll";
-import Detail from "./infinite/Detail";
+import InfiniteScroll from "./pages/InfiniteScroll";
+import Detail from "./pages/Detail";
 import "./App.css";
 
 function App() {
   return (
     <>
+      <span className="color"></span>
       <InfiniteScroll />
       <Detail />
     </>
