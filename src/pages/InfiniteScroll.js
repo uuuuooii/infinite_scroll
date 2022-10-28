@@ -1,13 +1,19 @@
 import React from "react";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, forwardRef } from "react";
 import Search from "../components/search/Search";
+import { useInView } from "react-intersection-observer";
 import "../styles/Infinite.css";
 
 function InfiniteScroll() {
+  //scroll 계산
   const categoryList = ["A Posts", "B Posts"];
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(0);
-  const [load, setLoad] = useState(0);
+  const [loading, setLoad] = useState(0);
+
+  //react-Intersection-Observer 라이브러리이용
+  const [ref, inView] = useInView();
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = async (page) => {
     setLoad(true); //로딩 시작
@@ -18,26 +24,37 @@ function InfiniteScroll() {
     setItems((prev) => [...prev, ...data]); //리스트 추가
     setLoad(false); //로딩 종료
   };
-  const handleScroll = () => {
-    const scrollHeight = document.documentElement.scrollHeight;
-    const scrollTop = document.documentElement.scrollTop;
-    const clientHeight = document.documentElement.clientHeight;
+  // const handleScroll = () => {
+  //   const scrollHeight = document.documentElement.scrollHeight;
+  //   const scrollTop = document.documentElement.scrollTop;
+  //   const clientHeight = document.documentElement.clientHeight;
 
-    if (scrollTop + clientHeight >= scrollHeight) {
-      setPage((page) => page + 1);
-    }
-  };
+  //   if (scrollTop + clientHeight >= scrollHeight) {
+  //     setPage((page) => page + 1);
+  //   }
+  // };
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (page < 10) fetchData(page);
   }, [page]);
+
+  useEffect(() => {
+    // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면 page+=1
+    if (inView && !loading) {
+      setIsLoading(true);
+      setTimeout(() => {
+        setPage((prevState) => prevState + 1);
+        setIsLoading(0);
+      }, 500);
+    }
+  }, [inView]);
 
   return (
     <div>
@@ -47,8 +64,9 @@ function InfiniteScroll() {
         items={items}
         setItems={setItems}
         categoryList={categoryList}
-        // obsRef={obsRef}
+        ref={ref}
       />
+      {/* <div ref={ref}>This is Target.</div> */}
     </div>
   );
 }

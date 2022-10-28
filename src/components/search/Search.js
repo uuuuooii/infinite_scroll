@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, forwardRef } from "react";
 import { FaSearch } from "react-icons/fa";
 import "../../styles/Search.css";
 
-function Search({ items, setItems, categoryList, obsRef }) {
+const Search = forwardRef(({ items, setItems, categoryList }, ref) => {
   const [filteredResults, setFilteredResults] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const inputFocus = useRef(null);
@@ -72,10 +72,10 @@ function Search({ items, setItems, categoryList, obsRef }) {
                 </div>
               );
             })}
-        <div ref={obsRef}>This is Target.</div>
+        <div ref={ref}>This is Target.</div>
       </div>
     </>
   );
-}
+});
 
 export default Search;
