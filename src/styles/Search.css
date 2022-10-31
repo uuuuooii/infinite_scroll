@@ -1,7 +1,7 @@
 .title_button {
     width: 10%;
     padding: 30px 0px 0px 30px;
-    margin: 78px 0px 0px 277px;
+    margin: 78px 0px 0px 500px;
     display: flex;
     justify-content: space-between;
     cursor: pointer;
@@ -13,7 +13,7 @@
 
 .line {
     width: 900px;
-    margin: 21px 0px 0px 289px;
+    margin: 21px 0px 0px 500px;
 }
 
 .input_wrap {
@@ -46,14 +46,23 @@
 }
 
 .wrap_search {
-    width: 900px;
-    /* border: 1px solid red; */
-    margin: 10px 224px 131px 256px;
-    padding: 35px 45px 0px 54px;
+    width: 880px;
+    margin: 10px 224px 131px 500px;
+    padding: 35px 54px 0px 43px;
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px 0px inset;
 }
 
+.wrap_button {
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.wrap_button :hover {
+    background-color: rgb(216, 211, 211)
+}
 
 .wrap_category {
     width: 880px;
@@ -64,21 +73,24 @@
 .category_id {
     position: absolute;
     color: rgb(60, 129, 246);
-    margin: 5px 0px 0px 0px;
     font-size: 20px;
 }
 
 .category_title {
     position: relative;
-    bottom: 5px;
-    padding: 9px 0px 0px 24px;
     font-weight: 500;
     font-size: 20px;
+    text-align: justify;
+    margin: 0px 0px 0px 25px;
+
 }
 
 .category_content {
+    position: relative;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    padding: 9px 0px 0px 24px;
+    text-align: justify;
 }

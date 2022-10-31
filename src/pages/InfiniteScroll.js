@@ -9,11 +9,10 @@ function InfiniteScroll() {
   const categoryList = ["A Posts", "B Posts"];
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(0);
-  const [loading, setLoad] = useState(0);
 
   //react-Intersection-Observer 라이브러리이용
   const [ref, inView] = useInView();
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoad] = useState(false);
 
   const fetchData = async (page) => {
     setLoad(true); //로딩 시작
@@ -48,10 +47,10 @@ function InfiniteScroll() {
   useEffect(() => {
     // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면 page+=1
     if (inView && !loading) {
-      setIsLoading(true);
+      setLoad(true);
       setTimeout(() => {
         setPage((prevState) => prevState + 1);
-        setIsLoading(0);
+        setLoad(0);
       }, 500);
     }
   }, [inView]);
@@ -66,7 +65,7 @@ function InfiniteScroll() {
         categoryList={categoryList}
         ref={ref}
       />
-      {/* <div ref={ref}>This is Target.</div> */}
+      <div ref={ref}>This is Target.</div>
     </div>
   );
 }

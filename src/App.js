@@ -1,14 +1,16 @@
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import InfiniteScroll from "./pages/InfiniteScroll";
 import Detail from "./pages/Detail";
 import "./App.css";
 
 function App() {
   return (
-    <>
-      <span className="color"></span>
-      <InfiniteScroll />
-      <Detail />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route InfiniteScroll path="/" element={<InfiniteScroll />} />
+        <Route Detail path="/detail/:id" element={<Detail />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
