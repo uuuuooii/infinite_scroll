@@ -1,13 +1,16 @@
-import React, { useState, useRef, forwardRef, useNavigate } from "react";
+import React, { useState, useRef, forwardRef } from "react";
 import { FaSearch } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 import "../../styles/Search.css";
 
 const Search = forwardRef(({ items, setItems, categoryList }, ref) => {
   const [filteredResults, setFilteredResults] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const inputFocus = useRef(null);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { Id } = useParams();
 
   const searchItems = (searchValue) => {
     setSearchInput(searchValue);
@@ -56,12 +59,8 @@ const Search = forwardRef(({ items, setItems, categoryList }, ref) => {
         {searchInput.length > 1
           ? filteredResults.map((item) => {
               return (
-                <div
-                // onClick={() => {
-                //   navigate("/detail");
-                // }}
-                >
-                  <span className="wrap_button">
+                <div>
+                  <span className="wrap_button" key={item.id}>
                     <div className="category_id">{item.id}.</div>
                     <div className="category_title">{item.title}</div>
                     <div className="category_content">{item.content}</div>
@@ -71,7 +70,12 @@ const Search = forwardRef(({ items, setItems, categoryList }, ref) => {
             })
           : items.map((category) => {
               return (
-                <span className="wrap_button">
+                <span
+                  className="wrap_button"
+                  onClick={() => {
+                    navigate(`/detail/${category.id}`);
+                  }}
+                >
                   <div className="wrap_category" key={category.id}>
                     <div className="category_id">{category.id}.</div>
                     <div className="category_title">{category.title} </div>

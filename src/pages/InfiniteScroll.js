@@ -23,6 +23,8 @@ function InfiniteScroll() {
     setItems((prev) => [...prev, ...data]); //리스트 추가
     setLoad(false); //로딩 종료
   };
+
+  //scroll 계산
   // const handleScroll = () => {
   //   const scrollHeight = document.documentElement.scrollHeight;
   //   const scrollTop = document.documentElement.scrollTop;
@@ -44,6 +46,7 @@ function InfiniteScroll() {
     if (page < 10) fetchData(page);
   }, [page]);
 
+  //react-Intersection-Observer 라이브러리이용
   useEffect(() => {
     // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면 page+=1
     if (inView && !loading) {
