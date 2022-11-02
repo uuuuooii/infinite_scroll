@@ -1,21 +1,20 @@
 import React, { useState, useRef, forwardRef } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 import "../../styles/Search.css";
 
-const Search = forwardRef(({ items, setItems, categoryList }, ref) => {
+const Search = forwardRef(({ aItems, bItems, category, setCategory }) => {
   const [filteredResults, setFilteredResults] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const inputFocus = useRef(null);
   const navigate = useNavigate();
-  const { Id } = useParams();
 
   const searchItems = (searchValue) => {
     setSearchInput(searchValue);
     if (searchInput !== "") {
-      const filteredData = items.filter((item) => {
+      const filteredData = aItems.filter((item) => {
         return Object.values(item)
           .join("")
           .toLowerCase()
@@ -23,8 +22,12 @@ const Search = forwardRef(({ items, setItems, categoryList }, ref) => {
       });
       setFilteredResults(filteredData);
     } else {
-      setFilteredResults(items);
+      setFilteredResults(aItems);
     }
+  };
+
+  const onChangeCategory = (ctg) => {
+    setCategory(ctg);
   };
 
   return (
@@ -46,13 +49,12 @@ const Search = forwardRef(({ items, setItems, categoryList }, ref) => {
         />
       </div>
       <div className="title_button">
-        {categoryList.map((item) => {
-          return (
-            <span key={item} className="button" onClick={() => setItems()}>
-              {item}
-            </span>
-          );
-        })}
+        <span className="button" onClick={() => onChangeCategory("a")}>
+          A Posts
+        </span>
+        <span className="button" onClick={() => onChangeCategory("b")}>
+          B Posts
+        </span>
       </div>
       <hr className="line" />
       <div className="wrap_search">
@@ -68,7 +70,25 @@ const Search = forwardRef(({ items, setItems, categoryList }, ref) => {
                 </div>
               );
             })
-          : items.map((category) => {
+          : category === "a"
+          ? aItems.map((category) => {
+              return (
+                <span
+                  className="wrap_button"
+                  onClick={() => {
+                    navigate(`/detail/${category.id}`);
+                  }}
+                >
+                  <div className="wrap_category" key={category.id}>
+                    <div className="category_id">{category.id}.</div>
+                    <div className="category_title">{category.title} </div>
+                    <br />
+                    <div className="category_content">{category.content}</div>
+                  </div>
+                </span>
+              );
+            })
+          : bItems.map((category) => {
               return (
                 <span
                   className="wrap_button"

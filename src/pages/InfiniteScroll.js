@@ -5,22 +5,45 @@ import { useInView } from "react-intersection-observer";
 import "../styles/Infinite.css";
 
 function InfiniteScroll() {
-  //scroll 계산
-  const categoryList = ["A Posts", "B Posts"];
-  const [items, setItems] = useState([]);
-  const [page, setPage] = useState(0);
+  const [aPost, setAPost] = useState({
+    items: [],
+    page: 0,
+  });
+  const [bPost, setBPost] = useState({
+    items: [],
+    page: 0,
+  });
 
   //react-Intersection-Observer 라이브러리이용
   const [ref, inView] = useInView();
   const [loading, setLoad] = useState(false);
 
-  const fetchData = async (page) => {
+  //category
+  const [category, setCategory] = useState("a");
+
+  const fetchAData = async (page) => {
     setLoad(true); //로딩 시작
+
     const response = await fetch(
       `https://recruit-api.yonple.com/recruit/354412/a-posts?page=${page}`
     );
     const data = await response.json();
-    setItems((prev) => [...prev, ...data]); //리스트 추가
+    setAPost((prev) => {
+      return { ...prev, items: [...prev.items, ...data] };
+    }); //리스트 추가
+    setLoad(false); //로딩 종료
+  };
+
+  const fetchBData = async (page) => {
+    setLoad(true); //로딩 시작
+
+    const response = await fetch(
+      `https://recruit-api.yonple.com/recruit/354412/b-posts?page=${page}`
+    );
+    const data = await response.json();
+    setBPost((prev) => {
+      return { ...prev, items: [...prev.items, ...data] };
+    }); //리스트 추가
     setLoad(false); //로딩 종료
   };
 
@@ -43,30 +66,55 @@ function InfiniteScroll() {
   // }, []);
 
   useEffect(() => {
-    if (page < 10) fetchData(page);
-  }, [page]);
+    if (category === "a") {
+      if (aPost.page < 10) fetchAData(aPost.page);
+      if (bPost.page === 0) fetchBData(bPost.page);
+    } else {
+      if (bPost.page < 10) fetchBData(bPost.page);
+    }
+  }, [aPost.page, bPost.page]);
 
-  //react-Intersection-Observer 라이브러리이용
+  //react-Intersection-Observer 라이브러리 이용
   useEffect(() => {
     // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면 page+=1
     if (inView && !loading) {
       setLoad(true);
       setTimeout(() => {
-        setPage((prevState) => prevState + 1);
+        if (category === "a")
+          setAPost((prev) => {
+            return { ...prev, page: prev.page + 1 };
+          });
+        else {
+          setBPost((prev) => {
+            return { ...prev, page: prev.page + 1 };
+          });
+        }
         setLoad(0);
       }, 500);
     }
   }, [inView]);
+
+  useEffect(() => {
+    console.log("test");
+    console.log(aPost.items);
+    console.log(bPost.items);
+  }, []);
 
   return (
     <div>
       <div className="color"></div>
 
       <Search
-        items={items}
-        setItems={setItems}
-        categoryList={categoryList}
+        aItems={aPost.items}
+        bItems={bPost.items}
+        category={category}
+        setCategory={setCategory}
         ref={ref}
+        // categoryList={categoryList}
+        // fetchData2={fetchData2}
+        // items2={items2}
+        // setItems2={setItems2}
+        // setCategory={setCategoryA}
       />
       <div ref={ref}>This is Target.</div>
     </div>

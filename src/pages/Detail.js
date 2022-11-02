@@ -5,7 +5,6 @@ import { useParams, useNavigate } from "react-router-dom";
 function Detail({}) {
   const [detail, setDetail] = useState([]);
   const { id } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`https://recruit-api.yonple.com/recruit/354412/a-posts/${id}`)
