@@ -7,20 +7,32 @@ import "../styles/Infinite.css";
 function InfiniteScroll() {
   //scroll 계산
   const categoryList = ["A Posts", "B Posts"];
-  const [items, setItems] = useState([]);
+  const [itemsA, setItemsA] = useState([]);
+  const [itemsB, setItemsB] = useState([]);
   const [page, setPage] = useState(0);
 
   //react-Intersection-Observer 라이브러리이용
   const [ref, inView] = useInView();
   const [loading, setLoad] = useState(false);
 
-  const fetchData = async (page) => {
+  //category
+  const [category, setCategory] = useState("a");
+  const fetchDataA = async (page, category) => {
     setLoad(true); //로딩 시작
     const response = await fetch(
       `https://recruit-api.yonple.com/recruit/354412/a-posts?page=${page}`
     );
     const data = await response.json();
-    setItems((prev) => [...prev, ...data]); //리스트 추가
+    setItemsA((prev) => [...prev, ...data]); //리스트 추가
+    setLoad(false); //로딩 종료
+  };
+  const fetchDataB = async (page) => {
+    setLoad(true); //로딩 시작
+    const response = await fetch(
+      `https://recruit-api.yonple.com/recruit/354412/b-posts?page=${page}`
+    );
+    const data = await response.json();
+    setItemsB((prev) => [...prev, ...data]); //리스트 추가
     setLoad(false); //로딩 종료
   };
 
@@ -43,7 +55,12 @@ function InfiniteScroll() {
   // }, []);
 
   useEffect(() => {
-    if (page < 10) fetchData(page);
+    if (category == "a") {
+      if (page < 10) fetchDataA(page);
+      if (page == 0) fetchDataB(page);
+    } else {
+      if (page < 10) fetchDataB(page);
+    }
   }, [page]);
 
   //react-Intersection-Observer 라이브러리이용
@@ -58,15 +75,23 @@ function InfiniteScroll() {
     }
   }, [inView]);
 
+  useEffect(() => {
+    console.log(itemsA);
+    console.log(itemsB);
+  }, [category]);
+
   return (
     <div>
       <div className="color"></div>
 
       <Search
-        items={items}
-        setItems={setItems}
+        itemsA={itemsA}
+        setItemsA={setItemsA}
         categoryList={categoryList}
         ref={ref}
+        setCategory={setCategory}
+        category={category}
+        itemsB={itemsB}
       />
       <div ref={ref}>This is Target.</div>
     </div>
