@@ -76,8 +76,7 @@ function InfiniteScroll() {
   }, [inView]);
 
   useEffect(() => {
-    console.log(itemsA);
-    console.log(itemsB);
+    console.log(category);
   }, [category]);
 
   return (
@@ -93,7 +92,7 @@ function InfiniteScroll() {
         category={category}
         itemsB={itemsB}
       />
-      <div ref={ref}>This is Target.</div>
+      <div ref={ref}></div>
     </div>
   );
 }
